@@ -18,11 +18,11 @@ Gaussian Process:
 
 $\ln p(f|X)=-\frac{1}{2}f^TK(X,X)^{-1}f-\frac{1}{2}\ln \det(K(X,X))+constant$
 
-评判HP好坏：![image-20220908173219209](pic\AutoNE1.png)
+评判HP好坏：![image-20220908173219209](pic/AutoNE1.png)
 
-![image-20220908173232038](pic\AutoNE2.png)
+![image-20220908173232038](pic/AutoNE2.png)
 
-于是最大化UCB：![image-20220908173355860](pic\AutoNE3.png)
+于是最大化UCB：![image-20220908173355860](pic/AutoNE3.png)
 
 整体步骤：
 
@@ -44,17 +44,17 @@ Phase 2：在全图上，用拟牛顿法（UCB）求出L个可能最好的HP，�
 
 X=[A,B]
 
-解耦(Deco)：![image-20220908193805722](pic\e-AutoGR1.png)
+解耦(Deco)：![image-20220908193805722](pic/e-AutoGR1.png)
 
-定理：![image-20220908193853658](pic\e-AutoGR2.png)
+定理：![image-20220908193853658](pic/e-AutoGR2.png)
 
 一定条件下$\gamma$有唯一解，此时A和X完全解耦
 
-X->Y的预测：MLP，参数$\Theta$![image-20220908194207048](pic\e-AutoGR3.png)
+X->Y的预测：MLP，参数$\Theta$![image-20220908194207048](pic/e-AutoGR3.png)
 
 两个优化合并为联合优化：
 
-<img src="pic\e-AutoGR4.png" alt="image-20220908194248618" style="zoom:80%;" />
+<img src="pic/e-AutoGR4.png" alt="image-20220908194248618" style="zoom:80%;" />
 
 整个过程：
 
@@ -64,7 +64,7 @@ X->Y的预测：MLP，参数$\Theta$![image-20220908194207048](pic\e-AutoGR3.png
 
    * 对于所有列表中的配置，更新$\gamma,\Theta$，更新是一个联合更新，先固定一个参数，用梯度下降更新另一个，再反过来（每次从头更新）
 
-     <img src="pic\e-AutoGR5.png" alt="image-20220908194627417" style="zoom:67%;" />
+     <img src="pic/e-AutoGR5.png" alt="image-20220908194627417" style="zoom:67%;" />
 
    * 首先对于各个HP(dim, batch-size)等，通过MLP查看重要性，然后按照重要性降序的顺序，选取预测值最好的一个configuration，对其每次更新一个HP（sampling 1000个可能值并固定其他HP进行预测，选取最好的），更新完后加入超参列表
 
@@ -76,7 +76,7 @@ X->Y的预测：MLP，参数$\Theta$![image-20220908194207048](pic\e-AutoGR3.png
 
 Differential Evolution (DE): 使用mutation策略 rand/1 
 
-具体来说是<img src="pic\DEHB1.png" alt="image-20220910013336545" style="zoom:80%;" />
+具体来说是<img src="pic/DEHB1.png" alt="image-20220910013336545" style="zoom:80%;" />
 
 其中$x$是父母，$v$是孩子，$F$是一个$(0,1]$的因子
 
@@ -86,5 +86,5 @@ Differential Evolution (DE): 使用mutation策略 rand/1
 
 该模型可并行，parent pool不必严格遵循一定顺序，各个子线程同步更新
 
-<img src="pic\DEHB2.png" alt="image-20220910012349045" style="zoom:80%;" />
+<img src="pic/DEHB2.png" alt="image-20220910012349045" style="zoom:80%;" />
 
