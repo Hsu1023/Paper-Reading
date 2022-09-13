@@ -10,6 +10,10 @@ Heterogeneity: 一个网络通常由高度异构的几个组件构成（**异构
 
 signature extraction - spectral graph theory: NetLSD (SOTA for preserve the community structure - heat diffusion - 保持网络结构相似性)
 
+**kernel能算出相似度，实验证明相关性；random walk随机性可能不是很强，kernel可以从大空间找到更好的**
+
+**degree似乎可能有更好的随机性**
+
 Kernel Function: $K_\theta(\theta_1,\theta_2),K_G(h(G_1),h(G_2))$，分别对应hp和图的相似性，h是对图进行编码，选用Matern 5/2 kernel function
 
 Gaussian Process:
@@ -29,6 +33,10 @@ $\ln p(f|X)=-\frac{1}{2}f^TK(X,X)^{-1}f-\frac{1}{2}\ln \det(K(X,X))+constant$
 Phase 1：选子图、选HP，用NE算法评估n组效果，然后结合结果用拟牛顿法求得核函数
 
 Phase 2：在全图上，用拟牛顿法（UCB）求出L个可能最好的HP，用NE算法跑一遍，每次跑都更新核函数，最后选出L个中最好的配置
+
+
+
+**核函数可以改进**
 
 
 
@@ -88,3 +96,10 @@ Differential Evolution (DE): 使用mutation策略 rand/1
 
 <img src="pic/DEHB2.png" alt="image-20220910012349045" style="zoom:80%;" />
 
+可能不热门，novelty也不是很好，这个64个采样等等可能会限制数据集和采样空间
+
+
+
+深度：想法，方法论（主线）；从**数据本身**挖方法论（图采样，遇到的问题，怎么采怎么利用）
+
+广度：别的预测任务，比较foundamental，不同任务不同模型
