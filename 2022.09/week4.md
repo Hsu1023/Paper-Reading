@@ -40,7 +40,7 @@ REF：[【ICML2022】基于随机注意力机制的可解释和广义图学习 -
 
 互信息：$I(a,b):=\sum_{a,b}P(a,b)\log\frac{P(a,b)}{P(a)P(b)}$
 
-Post-hoc GNN Interpretation: 先train GNN的参数，然后再train一个子图提取器（GNNExplainer和PGExplainer采用此种方法）<img src="pic/GSAT1.png" style="zoom:60%;" />
+Post-hoc GNN Interpretation: 先train GNN的参数，然后再train一个子图提取器（GNNExplainer和PGExplainer采用此种方法）<img src="pic/GSAT1.png" style="zoom:67%;" />
 
 事后解释存在问题：1）有偏见的先验知识：事后解释需要加入稀疏化/连接性约束来获得数据特征，而这种先验知识具有偏见性；2）模型可能会捕捉无用特征；3）模型未在子图上训练过，因此可能欠拟合
 
