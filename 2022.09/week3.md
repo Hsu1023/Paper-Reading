@@ -124,7 +124,7 @@ PDP: ![](pic\untitled6.png)
 >  * [Matching Node Embeddings for Graph Similarity (AAAI'17)](https://ojs.aaai.org/index.php/AAAI/article/view/10839)
 >* 图谱理论
 >
->![image-20220918163625889](pic/NetLSD1)
+>![image-20220918163625889](pic/NetLSD1.png)
 
 谱图理论，细节还没看完，将图提取成一个特征向量，定义特征向量的距离
 
