@@ -25,7 +25,7 @@ Loss：边缘似然<img src="pic/FSBO3.png" style="zoom:60%;" />
 
 假设：在许多source tasks上训出的model，只要target task的分布与之相像，则直接取mean可以很快收敛<img src="pic/FSBO2.png" style="zoom:60%;" />
 
-细节：不同source task的y全部scale到[0,1]导致normalization也必须应用到target上，于是我们对所有的source task的y取min和max得到$y_{min},y_{max}$，对于每一个batch取![image-20220917114855553](C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20220917114855553.png)
+细节：不同source task的y全部scale到[0,1]导致normalization也必须应用到target上，于是我们对所有的source task的y取min和max得到$y_{min},y_{max}$，对于每一个batch取![image-20220917114855553](pic/FSBO5.png)
 
 目的是让model能够学到变化的offset/variance下的不变特征，test时通过如下方式计算：<img src="pic/FSBO4.png" alt="image-20220917121725174" style="zoom:67%;" />
 
@@ -98,7 +98,7 @@ PDP: ![](pic\untitled6.png)
 
 其中$\hat{c}$是代理模型，$\hat{m}$是后验平均值
 
-实际上是将全空间按照树状CART分割成若干子空间，分割依据是分割后两个小子空间的方差改变最小（并未分离well-explored区域和less-explored区域）——用户既可以单独研究（自信的）子区域的超参数效应，也可以通过考虑完整的树结构来了解 HPO 的探索-利用采样。![image-20220918204450445](C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20220918204450445.png)
+实际上是将全空间按照树状CART分割成若干子空间，分割依据是分割后两个小子空间的方差改变最小（并未分离well-explored区域和less-explored区域）——用户既可以单独研究（自信的）子区域的超参数效应，也可以通过考虑完整的树结构来了解 HPO 的探索-利用采样。![image-20220918204450445](pic/untitled9.png)
 
 最终在Mean Confidence和Negative Log-Likelihood上均比不分割区域取得提升（即在确定度和最终效果上均有提升）
 

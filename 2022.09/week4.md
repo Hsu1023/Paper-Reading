@@ -48,17 +48,17 @@ gumble-softmax reparameterization trick：可以从离散分布中选
 
 总体的优化目标
 
-<img src="C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20220922233720383.png" alt="image-20220922233720383" style="zoom:67%;" />
+<img src="pic/GSAT2.png" alt="image-20220922233720383" style="zoom:67%;" />
 
-化为<img src="C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20220922233742438.png" alt="image-20220922233742438" style="zoom:67%;" />
+化为<img src="pic/GSAT3.png" alt="image-20220922233742438" style="zoom:67%;" />
 
 其中第一项是一个交叉熵，第二项是一个正则项，实际上保证了所取的子图是最有代表的图
 
-最后可以化为<img src="C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20220922233959606.png" alt="image-20220922233959606" style="zoom:67%;" />，认为Q(G_s)实际上是每个边按照伯努利p=r的概率分布
+最后可以化为<img src="pic/GSAT4.png" alt="image-20220922233959606" style="zoom:67%;" />，认为Q(G_s)实际上是每个边按照伯努利p=r的概率分布
 
 整体流程是对node进行embedding，然后边利用两个node的embedding经过一个MLP获得抽样概率，该概率即为最后选为子图的概率
 
-![](C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20220922234533939.png)
+![](pic/GSAT5.png)
 
 
 
