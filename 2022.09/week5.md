@@ -1,37 +1,3 @@
-## CS224W Lecture 12 by Jure Leskovec
-
-Node-induced subgraph：选子节点集V'，$E'=\{(u,v) | u\in V', v\in V' \}$
-Edge-induced subgraph：同样也称为non-induced subgraph
-
-Q：为什么random-walk用
-
-Isomorphism图同构：双射定义，无法证明是否是NP-hard问题，也无多项式解法
-* 子图的定义利用了同构，推断一个图是否是另一个图子图是NP-hard的
-
-Motif：recurring（频繁） , significant patterns（小诱导子图） of interconnections
-* ER random graph: (n, p) ，n个节点，节点之间是否连线服从p的伯努利分布
-* Configure model：<img src="pic/cs224w1.png" style="zoom:67%;" />
-* Switching： 随机交换两条边，进行若干次
-* Z-core: 衡量一个motif的重要性<img src="pic/cs224w2.png" style="zoom:67%;" />
-
-子图匹配
-* 基于嵌入
-	* 选择锚点anchor node，然后检索k-hop邻域，最后将邻域的子图用GNN嵌入
-	* Order Embedding Space: 偏序，如果是子图，那么有embedding的vector在所有维度上都小于另一个vector，这样满足了传递性、反对称性
-	* Loss function与子图有关，采用max-margin loss![](pic/cs224w3.png)
-	* 正采样：BFS，所有遍历到的有一定概率被选中，然后继续传播（传播深度一般3-5hop）；负采样：破坏子图，删边或者删点
-
-寻找最大频率子图（Frequent Pattern Mining）
-* counting：利用GNN预测频率；之后enumerating：小子图一点点长大，而不必枚举所有可能k节点子图 
-
-* [SPMiner(ICML'20 Workshop)](http://snap.stanford.edu/frequent-subgraph-mining/)![](pic/cs224w4.png)
-	
-	* 将图映射到高维采用子图匹配的类似方法
-	
-	* 估计频率：将大图随机采样生成许多子图，投影到order embedding space上，目标是让motif一点点长大，左下角盖住尽可能多的采样子图embedding，每一步都是贪心
-	
-	  ![](pic/cs224w5.png)
-
 
 
 ## The Generalized Mean Densest Subgraph Problem (KDD'21)
@@ -88,11 +54,90 @@ k-core的算法是按照贪心每次剥离度数最小的点，称之为SimplePe
 
 想法：能不能不抽子图，生成一个小的近似图作为surrogate
 
+
+
+## CS224W Lecture 12 by Jure Leskovec
+
+Node-induced subgraph：选子节点集V'，$E'=\{(u,v) | u\in V', v\in V' \}$
+Edge-induced subgraph：同样也称为non-induced subgraph
+
+Q：为什么random-walk用
+
+Isomorphism图同构：双射定义，无法证明是否是NP-hard问题，也无多项式解法
+* 子图的定义利用了同构，推断一个图是否是另一个图子图是NP-hard的
+
+Motif：recurring（频繁） , significant patterns（小诱导子图） of interconnections
+* ER random graph: (n, p) ，n个节点，节点之间是否连线服从p的伯努利分布
+* Configure model：<img src="pic/cs224w1.png" style="zoom:67%;" />
+* Switching： 随机交换两条边，进行若干次
+* Z-core: 衡量一个motif的重要性<img src="pic/cs224w2.png" style="zoom:67%;" />
+
+子图匹配
+* 基于嵌入
+	* 选择锚点anchor node，然后检索k-hop邻域，最后将邻域的子图用GNN嵌入
+	* Order Embedding Space: 偏序，如果是子图，那么有embedding的vector在所有维度上都小于另一个vector，这样满足了传递性、反对称性
+	* Loss function与子图有关，采用max-margin loss![](pic/cs224w3.png)
+	* 正采样：BFS，所有遍历到的有一定概率被选中，然后继续传播（传播深度一般3-5hop）；负采样：破坏子图，删边或者删点
+
+寻找最大频率子图（Frequent Subgraph Pattern Mining）
+* 难点：枚举可能子图和查询子图频率均是NP-hard的
+
+* counting：利用GNN预测频率；之后enumerating：小子图一点点长大，而不必枚举所有可能k节点子图 
+
+* [SPMiner(ICML'20 Workshop)](http://snap.stanford.edu/frequent-subgraph-mining/)![](pic/cs224w4.png)
+	
+	* 将图映射到高维采用子图匹配的类似方法
+	
+	* 估计频率：将大图随机采样生成许多子图，投影到order embedding space上，目标是让motif一点点长大，左下角盖住尽可能多的采样子图embedding，每一步都是贪心
+	
+	  ![](pic/cs224w5.png)
+
+
+
 ## MaNIACS: Approximate Mining of Frequent Subgraph Patterns through Sampling (KDD'21)
 
-速度，patents数据集 n=3,923,922，e=16,522,438，速度：15min or so
+### Summary
+
+寻找最大频率子图。最大频率子图从一个点开始长大，利用对称性(orbit概念)、剪枝等优化枚举子图的过程，并利用特殊的采样和VC维理论证明限制频率计算的误差。（具体证明、算法细节过于繁琐，并未看懂。）该算法计算速度较快，patents数据集 n=3,923,922，e=16,522,438，速度：15min or so，子图规模大约在10k的量级。
+
+### Background
+
+最大频率子图（已在上篇cs224w letcure12里叙述）
+
+Subgraph counting tutorial：[www19-subgraph-counting-tutorial-refs.pdf (ucsc.edu)](https://users.soe.ucsc.edu/~sesh/subgraph_counting/www19-subgraph-counting-tutorial-refs.pdf)
+
+### Contribution
+
+* 以往依靠采样的算法没有保证结果的近似度，本方法采用VC维等理论**证明了算法的误差上界**
+* 利用 MNI-frequency measure剪枝搜索空间
+* 速度快，效果好，误差低于理论上界
 
 
+
+## Pagerank
+
+* Flow Model: 重要性取决于指向他的节点的重要性，而该重要性又平均流向下游节点，如果假设所有节点重要性$r_i$和为1，那么有$r=Mr$，其中$M_{ij}=\frac{I(\exist edge(i,j)\in E)}{degree(v_i)}$
+* Random walk: 设$r$为一个随机游走的人落在第i号节点的概率向量，那么$r(t+1)=Mr(t)$，稳定状态下（时间无限长）有$r=Mr$
+* Power Iteration Method: i) 随机初始化r； ii) 更新r(t+1)=Mr(t)； iii) 直到$|r(t+1)-r(t)|<\epsilon$停止；大约50次迭代足够停止
+  * 有可能因为陷入某个点而吸收所有重要性(Dead Ends)：解决方案是以一个小概率$1-\beta$传送到一个任意一个节点（$\beta\approx0.8 \sim0.9$）![](pic/PageRank1.png)
+
+
+
+
+
+两种思路：一种surrogate graph，一种直接prune
+
+prune: k-core、clustering、frequent subgraph pattern mining([FSPM review](https://ieeexplore.ieee.org/abstract/document/9399267))
+
+Betweenness Centrality：连接度、重要性等，是否能结合k-core
+
+
+
+
+
+
+
+ABRA: Approximating Betweenness Centrality in Static and Dynamic Graphs with Rademacher Averages  (TKDD'18)
 
 Dynamic Graph Segmentation for Deep Graph Neural Networks (KDD'22)
 
