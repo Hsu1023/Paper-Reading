@@ -18,14 +18,19 @@ Motif：recurring（频繁） , significant patterns（小诱导子图） of int
 * 基于嵌入
 	* 选择锚点anchor node，然后检索k-hop邻域，最后将邻域的子图用GNN嵌入
 	* Order Embedding Space: 偏序，如果是子图，那么有embedding的vector在所有维度上都小于另一个vector，这样满足了传递性、反对称性
-	* Loss function与子图有关，采用max-margin loss![](pic\cs224w3.PNG)
+	* Loss function与子图有关，采用max-margin loss![](pic\cs224w3.png)
 	* 正采样：BFS，所有遍历到的有一定概率被选中，然后继续传播（传播深度一般3-5hop）；负采样：破坏子图，删边或者删点
 
 寻找最大频率子图（Frequent Pattern Mining）
 * counting：利用GNN预测频率；之后enumerating：小子图一点点长大，而不必枚举所有可能k节点子图 
-* [SPMiner(ICML'20 Workshop)](http://snap.stanford.edu/frequent-subgraph-mining/)![](pic\cs224w4.PNG)
+
+* [SPMiner(ICML'20 Workshop)](http://snap.stanford.edu/frequent-subgraph-mining/)![](pic\cs224w4.png)
+	
 	* 将图映射到高维采用子图匹配的类似方法
-	* 估计频率：将大图随机采样生成许多子图，投影到order embedding space上，目标是让motif一点点长大，左下角盖住尽可能多的采样子图embedding，每一步都是贪心![](pic\cs224w5.png)
+	
+	* 估计频率：将大图随机采样生成许多子图，投影到order embedding space上，目标是让motif一点点长大，左下角盖住尽可能多的采样子图embedding，每一步都是贪心
+	
+	  ![](pic\cs224w5.png)
 
 
 
@@ -47,7 +52,7 @@ k-core的算法是按照贪心每次剥离度数最小的点，称之为SimplePe
 
   $M_p(x)=(\frac{1}{n}\sum (x_i)^p)^{1/p}$
 
-  $M_\infin(x)=min\{x_i\};M(x)_{-\infin}=max\{x_i\};M_0(x)=(\prod x_i)^{1/p}$
+  $M_\infty(x)=min\{x_i\};M(x)_{-\infty}=max\{x_i\};M_0(x)=(\prod x_i)^{1/p}$
 
 * **p-mean densest subgraph**
 
