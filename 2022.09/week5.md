@@ -112,6 +112,52 @@ Subgraph counting tutorial：[www19-subgraph-counting-tutorial-refs.pdf (ucsc.ed
 * 利用 MNI-frequency measure剪枝搜索空间
 * 速度快，效果好，误差低于理论上界
 
+想法：借助Frequent Subgraph Patterns在原图上抠出一块与Most Frequent Subgraph相近的子图；抑或是以此图为中心向外k-hop作为最终子图
+
+
+
+## Efficient Community Search with Size Constraint (ICDE'21)
+
+### Background
+
+k-truss：图的一条边包含在k个三角形中，则support(e)=k，k-truss是一个极大子图，所有边support>=k-2
+
+k-truss是k-core的升级版，基于以下假设：三角关系通常具有牢固稳定的关系，一个社区的两个点必然可以通过一系列三角形到达；与此同时，蛋白质相互作用等生物关系网络的三角关系也具有非常重要作用
+
+> 相关概念：k-core，k-truss，k-ECC（去掉任何k-1条边后依然连通），k-clique，k-club，p-cohesion，k-edge/vertex connected，k-shell
+>
+> $(\alpha,\beta)-core$  [25]Liu et al.(WWW'19)  [41]Wang et al.(ICDE'21)
+>
+> (k,p)-core [45]Zhang et al.(ICDE'20)
+>
+> 还有一些衡量两个节点在结构中的相似性[9]
+
+SCkT想解决的问题是：寻找到一个k-truss子图，包含给定query vertices集合Q，同时图的节点数不超过k（下图给出k=4,s=6,Q={v1,v6}的一个例子，灰色阴影为所求子图），该问题是本文作者自己定义的，并且给出了该问题是NP-hard的证明
+
+![image-20220930021631932](pic/SCkT1.png)
+
+规模受限的搜索：局限于计算开销等，规模受限在有些情况下是必要的。
+
+### Methods
+
+首先，该文章用理论给出一个估出需要节点数量的下界，如果s小于下界则无解
+
+设已选点集为M（初始为必选点），则定义剩下的点score为
+
+![](pic/SCkT2.png)
+
+定义两种操作：Expand，选取score最高的点加入M并更新induced graph；shrink，选取M内score最小的点从M中删去
+
+事实上，Expand和Shrink均可单独作为dfs过程的策略进行搜索（只不过初始状态不同）
+
+该文章采用Hybrid方法，即节点普遍score高时（注意Score的取值范围为0-|M|）expand；否则shrink![](pic/SCkT3.png)
+
+### Experiment
+
+速度：在一张4千万节点和15亿边的图上，对于95%的query，生成图时间小于10s
+
+![](pic/SCkT4.png)
+
 
 
 ## Pagerank
