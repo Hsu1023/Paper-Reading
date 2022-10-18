@@ -1,5 +1,9 @@
 
 
+看看可不可以并行采样 dgl pytorch_geometry等，看看能不能加速
+
+可以看看k-core等corr会不会比randomwlak高
+
 ## The Generalized Mean Densest Subgraph Problem (KDD'21)
 
 ### Summary
@@ -79,8 +83,11 @@ Motif：recurring（频繁） , significant patterns（小诱导子图） of int
 	* Loss function与子图有关，采用max-margin loss![](pic/cs224w3.png)
 	* 正采样：BFS，所有遍历到的有一定概率被选中，然后继续传播（传播深度一般3-5hop）；负采样：破坏子图，删边或者删点
 
-寻找最大频率子图（Frequent Subgraph Pattern Mining）
+**寻找最大频率子图**（Frequent Subgraph Pattern Mining）
+
 * 难点：枚举可能子图和查询子图频率均是NP-hard的
+
+* **在KG内，可能必须要指定节点label；观测到的KG可能不完整；怎样定义motif**
 
 * counting：利用GNN预测频率；之后enumerating：小子图一点点长大，而不必枚举所有可能k节点子图 
 
@@ -126,9 +133,9 @@ k-truss是k-core的升级版，基于以下假设：三角关系通常具有牢�
 
 > 相关概念：k-core，k-truss，k-ECC（去掉任何k-1条边后依然连通），k-clique，k-club，p-cohesion，k-edge/vertex connected，k-shell
 >
-> $(\alpha,\beta)-core$  [25]Liu et al.(WWW'19)  [41]Wang et al.(ICDE'21)
+> $(\alpha,\beta)-core$ [25]   Liu et al.(WWW'19)[41]  Wang et al.(ICDE'21)
 >
-> (k,p)-core [45]Zhang et al.(ICDE'20)
+> (k,p)-core[45]  Zhang et al.(ICDE'20)
 >
 > 还有一些衡量两个节点在结构中的相似性[9]
 
@@ -169,6 +176,20 @@ SCkT想解决的问题是：寻找到一个k-truss子图，包含给定query ver
 
 
 
+子图采样：做得精细，但是需要简单有效，不想要很大计算开销
+
+k-core 第一篇文章 试验一下
+
+
+
+调研graph kernel
+
+有没有并行采样工具，gpu等
+
+争取十月份能找到一个子图的基础版本
+
+多线程
+
 
 
 两种思路：一种surrogate graph，一种直接prune
@@ -198,4 +219,6 @@ CLARE: A Semi-supervised Community Detection Algorithm (KDD'22)
 Reinforcement Subgraph Reasoning for Fake News Detection (KDD'22)
 
 Analyzing Online Transaction Networks with Network Motifs (KDD'22)
+
+微臣英语
 
