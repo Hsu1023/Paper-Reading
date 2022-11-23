@@ -91,7 +91,29 @@ features: 利用一个图的特征、利用不同图的跨图特征
 
 传统graph kernel局限于小的局部结构（如随机游走采样、最短路、子树、graphlet等），忽略全局结构；一些考虑全局结构的却没有考虑labeled-graph
 
-问题：无向
+### Method
+
+计算邻接矩阵的特征值与特征向量，取d个最大的，并令每个节点都embed成对应的特征向量，并令特征向量取绝对值，因此每个entity均embed成了d维超正方体里的一个点，比较图的相似性转化为了比较超正方体内点分布的差异。
+
+比较点的差异性，我们同样采取Histogram直方图的方式
+
+1）直方图设立：对d维超正方体，对每一维划分grid，一开始划分为$2^l$个，其次就是$2^{l-1}\cdots 2^1$，这些即为直方图的横坐标；d个维度，因此有$D=d\times 2^l$个直方图横坐标
+
+2）衡量直方图差异：<img src="C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20221018151628027.png" alt="image-20221018151628027" style="zoom:67%;" />，即对于每个直方图横坐标对应的值取min，最后所有加在一起
+
+3）衡量全图差异：对于粒度越粗的直方图，score应该越小，因此有（减法是减去上次已统计的）![image-20221018151753815](C:\Users\Xsu1023\AppData\Roaming\Typora\typora-user-images\image-20221018151753815.png)
+
+4）对于labeled的图，每个label单独算一波
+
+
+
+
+
+
+
+
+
+
 
 **实质上比较A三维矩阵[N,N,R]这种之间的相似度，比较矩阵相似度有一些成熟方法 矩阵特征值**
 
